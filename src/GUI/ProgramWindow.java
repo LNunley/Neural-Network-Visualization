@@ -14,8 +14,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -55,7 +54,7 @@ public class ProgramWindow {
   // This is a temporary fix until I can save topologies
   private NeuralNetwork algorithmCopy;
 
-  public class algorithmWorker extends SwingWorker<String, Integer> {
+  /*public class algorithmWorker extends SwingWorker<String, Integer> {
     private int epochs;
     private int hiddenNodes;
     private double learningRate;
@@ -126,12 +125,15 @@ public class ProgramWindow {
 
       epochBar.setValue(mostRecentValue);
     }
-  }
+  }*/
 
 
   public ProgramWindow() {
+    List<Integer> layers = Arrays.asList(15, 10, 11);
+    NeuralNetwork algorithm = new NeuralNetwork(layers, 0.2);
+    algorithm.saveToFile("");
     // Set object parameters
-    epochBar.setMinimum(0);
+    /*epochBar.setMinimum(0);
     epochSlider.setValue(1000);
     currSelectionIndex = -1;
 
@@ -218,10 +220,12 @@ public class ProgramWindow {
         worker.execute();
       }
     });
+    */
   }
 
 
   public static void main(String[] args) {
+    /*
     JFrame frame = new JFrame("NetworkGUI");
     frame.setContentPane(new ProgramWindow().mainPanel);
     frame.setResizable(false);
@@ -250,6 +254,6 @@ public class ProgramWindow {
   }
 
   private void createUIComponents() {
-    // TODO: place custom component creation code here
+    // TODO: place custom component creation code here*/
   }
 }

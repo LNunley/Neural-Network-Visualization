@@ -40,6 +40,4 @@ public class Feed {
   public void setWeight(double a_weight){
     weight = a_weight;
   }
-
-  /// TODO: Finish class
 }

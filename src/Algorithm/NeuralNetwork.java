@@ -1,7 +1,10 @@
 package Algorithm;
 
+import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import nu.xom.*; // XOM XML Library
 
 /**
  * Created by lfnunley on 10/30/2014.
@@ -40,5 +43,33 @@ public class NeuralNetwork {
    */
   public NeuralNetwork(String a_fileName){
 
+  }
+
+  public void saveToFile(String a_fileName){
+    Element root = new Element("Fibonacci_Numbers");
+
+    BigInteger low = BigInteger.ONE;
+    BigInteger high = BigInteger.ONE;
+
+    for(int i = 0; i < 100; i++){
+      Element fibonacci = new Element("fibonacci");
+      fibonacci.appendChild(low.toString());
+      root.appendChild(fibonacci);
+
+      BigInteger temp = high;
+      high = high.add(low);
+      low = temp;
+    }
+
+    Document doc = new Document(root);
+    try {
+      Serializer serializer = new Serializer(System.out, "ISO-8859-1");
+      serializer.setIndent(4);
+      serializer.setMaxLength(64);
+      serializer.write(doc);
+    }
+    catch (IOException ex) {
+      System.err.println(ex);
+    }
   }
 }
