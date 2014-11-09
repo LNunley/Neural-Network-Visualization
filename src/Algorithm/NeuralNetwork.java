@@ -1,9 +1,12 @@
 package Algorithm;
 
-import java.io.IOException;
+import java.io.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import nu.xom.*; // XOM XML Library
 
 /**
@@ -23,7 +26,7 @@ public class NeuralNetwork {
     // Populate Layers
     layers = new ArrayList<Layer>();
     for(int i : a_layerPopulations)
-      layers.add(new Layer(i));
+      layers.add(new Layer(i, (layers.size() == 0)));
 
     learningRate = a_learningRate;
 
@@ -42,29 +45,105 @@ public class NeuralNetwork {
    * @param a_fileName Relative path to file
    */
   public NeuralNetwork(String a_fileName){
+    layers = new ArrayList<Layer>();
 
+    File file = new File(a_fileName);
+
+    try{
+      Builder parser = new Builder();
+      Document doc = parser.build(file);
+      System.err.println("Success");
+
+      Element root = doc.getRootElement();
+      learningRate = Double.valueOf(root.getAttribute("learning_rate").getValue());
+
+      Elements eLayers = root.getFirstChildElement("layers").getChildElements("layer");
+
+      for(int i = 0; i < eLayers.size(); i++)
+        layers.add(new Layer(Boolean.valueOf(eLayers.get(i).getAttribute("input_layer").getValue()),
+                   Integer.valueOf(eLayers.get(i).getAttribute("id").getValue())));
+      /// TODO: Add neurons, link neurons
+
+    }
+    catch (ParsingException ex){
+      System.err.println("Malformed document");
+    }
+    catch (IOException ex){
+      System.err.println("Could not read file");
+    }
   }
 
   public void saveToFile(String a_fileName){
-    Element root = new Element("Fibonacci_Numbers");
+    Element root = new Element("network");
+    root.addAttribute(new Attribute("learning_rate", String.valueOf(learningRate)));
 
-    BigInteger low = BigInteger.ONE;
-    BigInteger high = BigInteger.ONE;
+    Element eBias = new Element("bias");
+    eBias.addAttribute(new Attribute("id", String.valueOf(bias.id)));
+    root.appendChild(eBias);
 
-    for(int i = 0; i < 100; i++){
-      Element fibonacci = new Element("fibonacci");
-      fibonacci.appendChild(low.toString());
-      root.appendChild(fibonacci);
+    Element eNeurons = new Element("neurons");
 
-      BigInteger temp = high;
-      high = high.add(low);
-      low = temp;
+    // Iterate through all neurons first, only way to do this is through layers
+    for(Layer l : layers)
+      for(Neuron n : l.neurons){
+        Element eNeuron = new Element("neuron");
+
+        eNeuron.addAttribute(new Attribute("id", String.valueOf(n.id)));
+
+        Element eLayer = new Element("layer");
+        eLayer.appendChild(String.valueOf(l.id));
+        eNeuron.appendChild(eLayer);
+
+
+        Element eInputs = new Element("inputs");
+        for(Map.Entry<Neuron, Feed> entry : n.inputs.entrySet()){
+          Element eInput = new Element("input");
+
+          eInput.addAttribute(new Attribute("id", String.valueOf(entry.getKey().id)));
+
+          /*Element eID = new Element("id");
+          eID.appendChild(String.valueOf(entry.getKey().id));
+          eInput.appendChild(eID);*/
+
+          Element eWeight = new Element("weight");
+          eWeight.appendChild(String.valueOf(entry.getValue().getWeight()));
+          eInput.appendChild(eWeight);
+
+          eInputs.appendChild(eInput);
+        }
+        eNeuron.appendChild(eInputs);
+
+        eNeurons.appendChild(eNeuron);
+      }
+
+    root.appendChild(eNeurons);
+
+    Element eLayers = new Element("layers");
+    for(Layer l : layers){
+      Element eLayer = new Element("layer");
+      eLayer.addAttribute(new Attribute("id", String.valueOf(l.id)));
+      eLayer.addAttribute(new Attribute("input_layer", String.valueOf(l.inputLayer)));
+
+      Element eLayerNeurons = new Element("neurons");
+      for(Neuron n : l.neurons){
+        Element neuron = new Element("neuron");
+        neuron.addAttribute(new Attribute("id", String.valueOf(n.id)));
+        eLayerNeurons.appendChild(neuron);
+      }
+
+      eLayer.appendChild(eLayerNeurons);
+      eLayers.appendChild(eLayer);
     }
 
+    root.appendChild(eLayers);
+
     Document doc = new Document(root);
-    try {
-      Serializer serializer = new Serializer(System.out, "ISO-8859-1");
-      serializer.setIndent(4);
+    try{
+      OutputStream fOut = new FileOutputStream(a_fileName);
+      PrintWriter fileOut = new PrintWriter(a_fileName);
+
+      Serializer serializer = new Serializer(fOut, "UTF-8");
+      serializer.setIndent(2);
       serializer.setMaxLength(64);
       serializer.write(doc);
     }

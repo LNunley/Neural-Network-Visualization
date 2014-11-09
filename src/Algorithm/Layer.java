@@ -6,16 +6,34 @@ import java.util.ArrayList;
  * Created by lfnunley on 10/30/14.
  */
 public class Layer {
-  private ArrayList<Neuron> neurons;
+  public ArrayList<Neuron> neurons;
+
+  public boolean inputLayer;
+
+  private static int idCounter = 0;
+  public int id;
 
   /**
    * Creates Layer from parameters
    * @param a_numNodes Number of nodes in the layer
    */
-  public Layer(int a_numNodes){
+  public Layer(int a_numNodes, boolean a_inputLayer){
+    id = idCounter++;
+    inputLayer = a_inputLayer;
+
     neurons = new ArrayList<Neuron>();
     for(int i = 0; i < a_numNodes; i++)
       neurons.add(new Neuron());
+  }
+
+  public Layer(boolean a_inputLayer, int a_id){
+    id = a_id;
+    if(idCounter <= id)
+      idCounter = id + 1;
+
+    inputLayer = a_inputLayer;
+
+    neurons = new ArrayList<Neuron>();
   }
 
   /**

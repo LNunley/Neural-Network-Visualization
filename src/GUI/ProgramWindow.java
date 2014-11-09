@@ -131,7 +131,8 @@ public class ProgramWindow {
   public ProgramWindow() {
     List<Integer> layers = Arrays.asList(15, 10, 11);
     NeuralNetwork algorithm = new NeuralNetwork(layers, 0.2);
-    algorithm.saveToFile("");
+    algorithm.saveToFile("network.xml");
+    NeuralNetwork algorithm2 = new NeuralNetwork("network.xml");
     // Set object parameters
     /*epochBar.setMinimum(0);
     epochSlider.setValue(1000);

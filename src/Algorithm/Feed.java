@@ -40,4 +40,14 @@ public class Feed {
   public void setWeight(double a_weight){
     weight = a_weight;
   }
+
+  /**
+   * @return The value of weight
+   */
+  public double getWeight() { return weight; };
+
+  /**
+   * @return The value of input
+   */
+  public double getInput() { return input; };
 }
