@@ -91,7 +91,7 @@ public class NeuralNetwork {
         eNeuron.addAttribute(new Attribute("id", String.valueOf(n.id)));
 
         Element eLayer = new Element("layer");
-        eLayer.appendChild(String.valueOf(l.id));
+        eLayer.addAttribute(new Attribute("id", String.valueOf(l.id)));
         eNeuron.appendChild(eLayer);
 
 
@@ -100,14 +100,7 @@ public class NeuralNetwork {
           Element eInput = new Element("input");
 
           eInput.addAttribute(new Attribute("id", String.valueOf(entry.getKey().id)));
-
-          /*Element eID = new Element("id");
-          eID.appendChild(String.valueOf(entry.getKey().id));
-          eInput.appendChild(eID);*/
-
-          Element eWeight = new Element("weight");
-          eWeight.appendChild(String.valueOf(entry.getValue().getWeight()));
-          eInput.appendChild(eWeight);
+          eInput.addAttribute(new Attribute("weight", String.valueOf(entry.getValue().getWeight())));
 
           eInputs.appendChild(eInput);
         }
