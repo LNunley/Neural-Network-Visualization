@@ -2,10 +2,7 @@ package Algorithm;
 
 import java.io.*;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import nu.xom.*; // XOM XML Library
 
@@ -13,37 +10,31 @@ import nu.xom.*; // XOM XML Library
  * Created by lfnunley on 10/30/2014.
  */
 public class NeuralNetwork {
-  private ArrayList<Layer> layers;
+  private NeuronPool neuronPool;
   private Double learningRate;
-  private Neuron bias;
 
   /**
-   * Creates Neural Network from parameters
-   * @param a_layerPopulations Each element, starting from 0, represents a layer with that element's value of nodes
-   * @param a_learningRate Learning rate, 0 > x >= 1
+   * Creates Neural Network with nothing in it
    */
-  public NeuralNetwork(List<Integer> a_layerPopulations, double a_learningRate){
-    // Populate Layers
-    layers = new ArrayList<Layer>();
-    for(int i : a_layerPopulations)
-      layers.add(new Layer(i, (layers.size() == 0)));
+  public NeuralNetwork(){
+    // Default value for learningrate
+    learningRate = 0.2;
 
-    learningRate = a_learningRate;
-
-    // Link layer nodes
-    for(int i = 0; i < layers.size() - 1; i++)
-      layers.get(i).linkLayer(layers.get(i + 1));
-
-    // Create and link bias
-    bias = new Neuron();
-    for(Layer l : layers)
-      l.linkNode(bias);
+    neuronPool = new NeuronPool();
   }
+
+  /**
+   * @return neuronPool
+   */
+  public NeuronPool getPool(){
+    return neuronPool;
+  }
+
 
   /**
    * Loads Neural Network from file
    * @param a_fileName Relative path to file
-   */
+   *//*
   public NeuralNetwork(String a_fileName){
     layers = new ArrayList<Layer>();
 
@@ -143,5 +134,5 @@ public class NeuralNetwork {
     catch (IOException ex) {
       System.err.println(ex);
     }
-  }
+  }*/
 }

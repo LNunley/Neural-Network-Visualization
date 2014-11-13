@@ -4,17 +4,25 @@ package Algorithm;
  * Created by lfnunley on 10/31/14.
  */
 public class Feed {
+  private int senderID;
+  private int receiverID;
+
   private double weight;
-  private double input;
+  private double inputValue;
 
   /**
    * Assigns variables and creates object
+   *
+   * @param a_senderID ID of the sending neuron
+   * @param a_receiverID ID of the recieving neuron
    * @param a_weight Weight of the input
-   * @param a_input Value of the input
    */
-  public Feed(double a_weight, double a_input){
+  public Feed(int a_senderID, int a_receiverID, double a_weight){
+    inputValue = 0;
+
     weight = a_weight;
-    input = a_input;
+    senderID = a_senderID;
+    receiverID = a_receiverID;
   }
 
   /**
@@ -22,7 +30,7 @@ public class Feed {
    * @return The product of weight and input
    */
   public double getProduct(){
-    return (weight * input);
+    return (weight * inputValue);
   }
 
   /**
@@ -30,7 +38,7 @@ public class Feed {
    * @param a_input The new value for input
    */
   public void setInput(double a_input){
-    input = a_input;
+    inputValue = a_input;
   }
 
   /**
@@ -49,5 +57,5 @@ public class Feed {
   /**
    * @return The value of input
    */
-  public double getInput() { return input; };
+  public double getInputValue() { return inputValue; };
 }
