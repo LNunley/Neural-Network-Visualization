@@ -17,7 +17,7 @@ public class NeuralNetwork {
    * Creates Neural Network with nothing in it
    */
   public NeuralNetwork(){
-    // Default value for learningrate
+    // Default value for learningRate
     learningRate = 0.2;
 
     neuronPool = new NeuronPool();
@@ -30,6 +30,12 @@ public class NeuralNetwork {
     return neuronPool;
   }
 
+  public void createMultilayer(){
+    // 15 input nodes
+    ArrayList<Integer> layer1 = new ArrayList<Integer>();
+    for(int i = 0; i < 0; i++)
+      layer1.add(neuronPool.addNeuron());
+  }
 
   /**
    * Loads Neural Network from file
@@ -53,7 +59,6 @@ public class NeuralNetwork {
       for(int i = 0; i < eLayers.size(); i++)
         layers.add(new Layer(Boolean.valueOf(eLayers.get(i).getAttribute("input_layer").getValue()),
                    Integer.valueOf(eLayers.get(i).getAttribute("id").getValue())));
-      /// TODO: Add neurons, link neurons
 
     }
     catch (ParsingException ex){
