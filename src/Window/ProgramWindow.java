@@ -24,7 +24,7 @@ public class ProgramWindow extends JFrame{
         add(graphicsPanel);
         pack();
 
-        timer = new Timer(33, new ActionListener() {
+        timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 graphicsPanel.updateModel();

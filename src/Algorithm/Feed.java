@@ -52,10 +52,14 @@ public class Feed {
   /**
    * @return The value of weight
    */
-  public double getWeight() { return weight; };
+  public double getWeight() { return weight; }
 
   /**
    * @return The value of input
    */
-  public double getInputValue() { return inputValue; };
+  public double getInputValue() { return inputValue; }
+
+  public int getSenderID() { return senderID; }
+
+  public int getReceiverID() { return receiverID; }
 }
